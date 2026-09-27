@@ -17,9 +17,8 @@ from django.urls import re_path
 from app.views import lineups
 
 urlpatterns = [
-    re_path(
-        r'^api/v1/lineups$',
-        lineups.LineupsLeagueSummary.as_view(),
-        name='lineups_summary',
-    ),
+    re_path(r'^api/v1/lineups$', lineups.LineupsLeagueSummary.as_view(), name='lineups_summary'),
+    re_path(r'^api/v1/lineups/detail$', lineups.LineupDetail.as_view(), name='lineup_detail'),
+    re_path(r'^api/v1/players/impact$', lineups.PlayersImpact.as_view(), name='players_impact'),
+    re_path(r'^api/v1/meta$', lineups.LeagueMeta.as_view(), name='meta'),
 ]

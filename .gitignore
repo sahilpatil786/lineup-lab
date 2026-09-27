@@ -1,5 +1,6 @@
 .python-version
 .DS_Store
+.venv/
 
 frontend/node_modules
 frontend/dist/*
