@@ -1,15 +1,63 @@
-<section class="api-inspector">
-  <h1>Lineups Summary Responses</h1>
+<section class="api-console">
+  <div class="api-console__wrap">
+    <div class="api-console__header">
+      <h1 class="t-h2">API Console</h1>
+      <p class="t-lede">Direct query inspector across all OKC Lineup Lab endpoints.</p>
+    </div>
 
-  <mat-form-field appearance="outline">
-    <mat-label>Lineup size</mat-label>
-    <mat-select [(ngModel)]="leagueLineupSize" (selectionChange)="changeLeagueLineupSize()">
-      @for (lineupSize of lineupSizes; track lineupSize.value) {
-        <mat-option [value]="lineupSize.value">{{ lineupSize.label }}</mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
+    <!-- Endpoint Picker -->
+    <div class="api-console__controls">
+      <div class="control-row">
+        <span class="t-label control-label">ENDPOINT</span>
+        <app-segmented
+          [options]="endpointOptions"
+          [value]="currentPath()"
+          (valueChange)="onPathChange($event)"
+        />
+      </div>
 
-  <div>API response for {{ leagueEndpoint }}</div>
-  <pre>{{ leagueApiResponse }}</pre>
+      <!-- Query String Input -->
+      <div class="control-row">
+        <span class="t-label control-label">QUERY PARAMS</span>
+        <div class="input-action-box">
+          <input
+            type="text"
+            class="query-input"
+            [ngModel]="queryString()"
+            (ngModelChange)="queryString.set($event)"
+            (keydown.enter)="sendRequest()"
+            placeholder="e.g. lineup_size=5&sort_by=net_rating"
+          />
+          <button type="button" class="send-btn" (click)="sendRequest()">
+            Send
+          </button>
+        </div>
+      </div>
+
+      <!-- Preset Example Chips -->
+      <div class="presets-row">
+        <span class="t-label presets-label">PRESETS:</span>
+        @for (p of presets; track p.label) {
+          <button type="button" class="preset-chip" (click)="applyPreset(p)">
+            {{ p.label }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- Output Display -->
+    <div class="api-console__output">
+      <div class="output-meta">
+        <div class="endpoint-line">
+          <span class="t-label">REQUEST URL:</span>
+          <code>{{ displayedEndpoint() }}</code>
+        </div>
+        <div class="status-line">
+          <span class="status-badge" [class.is-loading]="loading()">{{ statusText() }}</span>
+        </div>
+      </div>
+
+      <pre class="json-viewer">{{ jsonResponse() }}</pre>
+    </div>
+  </div>
 </section>
