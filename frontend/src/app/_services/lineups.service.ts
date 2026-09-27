@@ -3,6 +3,15 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import {
+  LineupDetail,
+  LineupQuery,
+  LineupRecord,
+  MetaResponse,
+  PlayerImpact,
+  PossessionFilterQuery,
+  TeamFilterQuery,
+} from '../lineups-summary/models/lineup.model';
 import { BaseService } from './base.service';
 
 @Injectable({ providedIn: 'root' })
@@ -43,5 +52,42 @@ export class LineupsService extends BaseService {
         apiResponse: data,
       })),
     );
+  }
+
+  private toParams(query: object): HttpParams {
+    let params = new HttpParams();
+    for (const [key, value] of Object.entries(query)) {
+      if (value === undefined || value === null || value === '') continue;
+      if (Array.isArray(value)) {
+        for (const item of value) params = params.append(key, String(item));
+      } else {
+        params = params.set(key, String(value));
+      }
+    }
+    return params;
+  }
+
+  getLineups(query: LineupQuery): Observable<LineupRecord[]> {
+    return this.get(`${this.baseUrl}/lineups`, this.toParams(query)).pipe(map((d) => d as LineupRecord[]));
+  }
+
+  getLineupDetail(playerIds: string[], filters: PossessionFilterQuery = {}): Observable<LineupDetail> {
+    return this.get(`${this.baseUrl}/lineups/detail`, this.toParams({ ...filters, player_ids: playerIds }))
+      .pipe(map((d) => d as LineupDetail));
+  }
+
+  getPlayerImpact(query: TeamFilterQuery & { min_partner_possessions?: number } = {}): Observable<PlayerImpact[]> {
+    return this.get(`${this.baseUrl}/players/impact`, this.toParams(query)).pipe(map((d) => d as PlayerImpact[]));
+  }
+
+  getMeta(): Observable<MetaResponse> {
+    return this.get(`${this.baseUrl}/meta`).pipe(map((d) => d as MetaResponse));
+  }
+
+  getRaw(path: string, queryString: string): Observable<{ endpoint: string; apiResponse: unknown }> {
+    const endpoint = `${this.baseUrl}/${path}`;
+    const params = new HttpParams({ fromString: queryString.replace(/^\?/, '') });
+    const shown = queryString ? `${endpoint}?${queryString.replace(/^\?/, '')}` : endpoint;
+    return this.get(endpoint, params).pipe(map((data) => ({ endpoint: shown, apiResponse: data })));
   }
 }

@@ -1,1 +1,24 @@
 $color-thunder-blue: #007ac1;
+
+$bp-sm: 600px;
+$bp-md: 900px;
+$bp-lg: 1200px;
+
+@mixin up($bp) { @media (min-width: $bp) { @content; } }
+@mixin down($bp) { @media (max-width: $bp - 1px) { @content; } }
+
+@mixin label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@mixin numeral {
+  font-family: var(--font-display);
+  font-variation-settings: 'wdth' 75;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}

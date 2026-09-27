@@ -1,24 +1,13 @@
-<div id="app-header">OKC Technical Assessment</div>
-<nav mat-tab-nav-bar [tabPanel]="tabPanel">
-  <a
-    mat-tab-link
-    routerLink="/lineups-summary"
-    routerLinkActive
-    [active]="currentTab === tab.FRONTEND"
-    (click)="currentTab = tab.FRONTEND"
-  >
-    Frontend
+<header class="shell">
+  <a class="shell__brand" routerLink="/lineups-summary">
+    <span class="shell__mark">Lineup Lab</span>
+    <span class="shell__tag">OKC Technical Assessment</span>
   </a>
-  <a
-    mat-tab-link
-    routerLink="/lineups-summary-api"
-    routerLinkActive
-    [active]="currentTab === tab.BACKEND"
-    (click)="currentTab = tab.BACKEND"
-  >
-    Backend
-  </a>
-</nav>
-<mat-tab-nav-panel #tabPanel>
-  <router-outlet></router-outlet>
-</mat-tab-nav-panel>
+  <nav class="shell__nav" aria-label="Primary">
+    <a routerLink="/lineups-summary" routerLinkActive="is-active" ariaCurrentWhenActive="page">Frontend</a>
+    <a routerLink="/lineups-summary-api" routerLinkActive="is-active" ariaCurrentWhenActive="page">Backend</a>
+  </nav>
+</header>
+<main>
+  <router-outlet />
+</main>

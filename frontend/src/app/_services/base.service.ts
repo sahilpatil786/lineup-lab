@@ -26,7 +26,7 @@ export class BaseService {
       if (res?.error && typeof res.error === 'object' && !Array.isArray(res.error)) {
         errorMessages = Object.entries(res.error as Record<string, unknown>).map(([key, value]) => {
           const keyName = this.errorKeyMap[key] || key;
-          return `${keyName}: ${value}`;
+          return `${keyName}: ${typeof value === 'string' ? value : JSON.stringify(value)}`;
         });
       } else if (typeof res?.error === 'string' && res.error.trim()) {
         errorMessages = [res.error.slice(0, 200)];
