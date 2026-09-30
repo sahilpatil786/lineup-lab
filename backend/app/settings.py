@@ -16,7 +16,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'x31d0_@i19bz)q*_nibl8#p224$hu1yhk$or$ew=7j#v5h3%4f'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'x31d0_@i19bz)q*_nibl8#p224$hu1yhk$or$ew=7j#v5h3%4f')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -90,11 +90,11 @@ DATABASES = {
         'OPTIONS': {
             'options': '-c search_path=app,public',
         },
-        'NAME': 'okc',
-        'USER': 'okcapplicant',
-        'PASSWORD': 'thunder',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'NAME': os.environ.get('PGDATABASE', 'okc'),
+        'USER': os.environ.get('PGUSER', 'okcapplicant'),
+        'PASSWORD': os.environ.get('PGPASSWORD', 'thunder'),
+        'HOST': os.environ.get('PGHOST', '127.0.0.1'),
+        'PORT': os.environ.get('PGPORT', '5432'),
     },
 }
 

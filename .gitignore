@@ -11,3 +11,7 @@ frontend-angular12-backup/
 __pycache__/
 *.pgsql
 dbexport.pgsql
+
+prompts/
+screenrecording/
+SUBMISSION.md
